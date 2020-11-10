@@ -11,8 +11,11 @@ public interface BankAccount {
      *            id of the user requesting this operation
      * @param amount
      *            amount to be withdrawn
+     * 
+     * @throws NotEnoughFundsException
+     * 			  if the balance is not enough to withdraw
      */
-    void withdraw(int usrID, double amount);
+    void withdraw(int usrID, double amount) throws NotEnoughFundsException;
 
     /**
      * 
@@ -38,8 +41,9 @@ public interface BankAccount {
      *            id of the user requesting this opera
      * @param amount
      *            amount to be withdrawn via AT
+     * @throws NotEnoughFundsException 
      */
-    void withdrawFromATM(int usrID, double amount);
+    void withdrawFromATM(int usrID, double amount) throws NotEnoughFundsException;
 
     /**
      * 
