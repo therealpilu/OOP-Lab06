@@ -46,16 +46,15 @@ public class RobotEnvironment {
      * @return A boolean indicating if the robot moved or not (a robot can move
      *         only inside the environment's boundaries)
      */
-    public boolean move(final int newX, final int newY) {
+    public void move(final int newX, final int newY) {
         if (newX >= RobotEnvironment.WORLD_X_LOWER_LIMIT
                 && newX <= RobotEnvironment.WORLD_X_UPPER_LIMIT
                 && newY >= RobotEnvironment.WORLD_Y_LOWER_LIMIT
                 && newY <= RobotEnvironment.WORLD_Y_UPPER_LIMIT) {
             this.position.setX(newX);
             this.position.setY(newY);
-            return true;
         } else {
-            return false;
+            throw new PositionOutOfBoundException(newX, newY);
         }
     }
 
