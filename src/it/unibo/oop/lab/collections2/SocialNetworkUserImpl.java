@@ -1,7 +1,13 @@
 package it.unibo.oop.lab.collections2;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 
@@ -29,6 +35,7 @@ public class SocialNetworkUserImpl<U extends User> extends UserImpl implements S
      * 
      * think of what type of keys and values would best suit the requirements
      */
+	private Map<String, Set<U>> following;
 
     /*
      * [CONSTRUCTORS]
@@ -40,7 +47,6 @@ public class SocialNetworkUserImpl<U extends User> extends UserImpl implements S
      * 
      * 2) Define a further constructor where age is defaulted to -1
      */
-
     /**
      * Builds a new {@link SocialNetworkUserImpl}.
      * 
@@ -56,6 +62,11 @@ public class SocialNetworkUserImpl<U extends User> extends UserImpl implements S
      */
     public SocialNetworkUserImpl(final String name, final String surname, final String user, final int userAge) {
         super(name, surname, user, userAge);
+        this.following = new HashMap<>();
+    }
+    
+    public SocialNetworkUserImpl(final String name, final String surname, final String user) {
+    	this(name, surname, user, -1);
     }
 
     /*
@@ -66,17 +77,35 @@ public class SocialNetworkUserImpl<U extends User> extends UserImpl implements S
 
     @Override
     public boolean addFollowedUser(final String circle, final U user) {
-        return false;
+    	
+    	Set<U> circleFriends = this.following.get(circle);
+    	if (circleFriends == null) {
+    		circleFriends = new HashSet<>();
+    		this.following.put(circle, circleFriends);
+    	}
+    	return this.following.get(circle).add(user);
     }
 
     @Override
     public Collection<U> getFollowedUsersInGroup(final String groupName) {
-        return null;
+    	
+    	final Collection<U> groupFriends = this.following.get(groupName);
+    	if (groupFriends != null) {
+    		return new ArrayList<>(groupFriends);
+    	}
+    	
+        return Collections.emptyList();
     }
 
     @Override
     public List<U> getFollowedUsers() {
-        return null;
+    	
+    	final Set<U> followedUsers = new HashSet<>();
+    	for (final Set<U> group : this.following.values()) {
+    		followedUsers.addAll(group);
+    	}
+    	
+        return new ArrayList<>(followedUsers);
     }
 
 }
